@@ -1,5 +1,6 @@
 package com.tienda.erandibordados.ecommerce.model;
 
+import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import lombok.EqualsAndHashCode;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
+@Embeddable
 public class Direccion {
     private String calle;
     private String numero;
