@@ -75,9 +75,13 @@
     <div class="form-group">
       <label class="control-label col-sm-2" for="tipoCategoria">Categoria:</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="tipoCategoria" name="tipoCategoria"
-                  placeholder="Ingrese la categoría del producto" required
-                  autocomplete="off"> </input>
+        <select class="form-control" id="tipoCategoria" name="tipoCategoria" required>
+          <option value="" disabled selected>Seleccione la categoría</option>
+          <option th:value="CARTERAS">Carteras</option>
+          <option th:value="MOCHILAS">Mochilas</option>
+          <option th:value="BOLSOS">Bolsos</option>
+          <option th:value="NECESSER">Necesser</option>
+        </select>
       </div>
     </div>
     <div class="form-group">
