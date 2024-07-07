@@ -22,7 +22,7 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     @Override
-    public void actualizar(Producto producto) {
+    public void update(Producto producto) {
         productoRepository.save(producto);
     }
 
@@ -35,4 +35,6 @@ public class ProductoServiceImpl implements ProductoService {
     public List<Producto> findAll() {
         return productoRepository.findAll();
     }
+
+
 }
