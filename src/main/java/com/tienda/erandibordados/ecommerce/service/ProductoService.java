@@ -13,4 +13,6 @@ public interface ProductoService {
     public List<Producto> findAll();
 
     public void update(Producto producto);
+
+    Optional<Producto> findById(Long id);
 }

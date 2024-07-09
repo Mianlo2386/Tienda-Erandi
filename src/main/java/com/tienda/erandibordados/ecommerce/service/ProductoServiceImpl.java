@@ -36,5 +36,7 @@ public class ProductoServiceImpl implements ProductoService {
         return productoRepository.findAll();
     }
 
-
+    @Override
+    public Optional<Producto> findById(Long id) {
+        return productoRepository.findById(id);}
 }
