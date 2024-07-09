@@ -3,7 +3,9 @@ package com.tienda.erandibordados.ecommerce.controller;
 import com.tienda.erandibordados.ecommerce.model.DetalleOrden;
 import com.tienda.erandibordados.ecommerce.model.Orden;
 import com.tienda.erandibordados.ecommerce.model.Producto;
+import com.tienda.erandibordados.ecommerce.model.Usuario;
 import com.tienda.erandibordados.ecommerce.repository.ProductoRepository;
+import com.tienda.erandibordados.ecommerce.service.IUsuarioService;
 import com.tienda.erandibordados.ecommerce.service.ProductoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +25,9 @@ public class HomeController {
     private final Logger log = LoggerFactory.getLogger(HomeController.class);
     @Autowired
     private ProductoService productoService;
+
+    @Autowired
+    private IUsuarioService usuarioService;
 
     List<DetalleOrden> detalles = new ArrayList<DetalleOrden>();// para almacenar detalles de la orden
 
@@ -110,6 +115,18 @@ public class HomeController {
         model.addAttribute("orden", orden);
 
         return "usuario/carrito";
+    }
+
+    @GetMapping("/order")
+    public String order(Model model){
+
+        Usuario usuario = usuarioService.findById(1L).get();
+
+        model.addAttribute("cart", detalles);
+        model.addAttribute("orden", orden);
+        model.addAttribute("usuario", usuario);
+
+        return "usuario/resumenorden";
     }
 
 }
