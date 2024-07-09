@@ -48,6 +48,9 @@
 								<p th:text="'Descripción: ' + ${producto.descripcion}"></p>
 							</li>
 							<li class="list-group-item">
+								<h5 th:text="'Categoría: ' + ${producto.tipoCategoria}"></h5>
+							</li>
+							<li class="list-group-item">
 								<h6>
 									Cantidad: <input type="number" id="cantidad" name="cantidad" autocomplete="off" min="1" max="5" value="1">
 								</h6>
