@@ -1,6 +1,7 @@
 package com.tienda.erandibordados.ecommerce.model;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -15,8 +16,8 @@ public class Orden {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String numero;
-    private LocalDateTime fechaCreacion;
-    private LocalDateTime fechaRecepcion;
+    private Date fechaCreacion;
+    private Date fechaRecepcion;
     private double total;
 
     @ManyToOne

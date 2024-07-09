@@ -1,7 +1,7 @@
 package com.tienda.erandibordados.ecommerce.service;
 
 import com.tienda.erandibordados.ecommerce.model.Producto;
-import com.tienda.erandibordados.ecommerce.repository.ProductoRepository;
+import com.tienda.erandibordados.ecommerce.repository.IProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,33 +10,33 @@ import java.util.Optional;
 @Service
 public class ProductoServiceImpl implements ProductoService {
     @Autowired
-    private ProductoRepository productoRepository;
+    private IProductoRepository IProductoRepository;
     @Override
     public Producto save(Producto producto) {
-        return productoRepository.save(producto);
+        return IProductoRepository.save(producto);
     }
 
     @Override
     public Optional<Producto> get(Long id) {
-        return productoRepository.findById(id);
+        return IProductoRepository.findById(id);
     }
 
     @Override
     public void update(Producto producto) {
-        productoRepository.save(producto);
+        IProductoRepository.save(producto);
     }
 
     @Override
     public void delete(Long id) {
-        productoRepository.deleteById(id);
+        IProductoRepository.deleteById(id);
     }
 
     @Override
     public List<Producto> findAll() {
-        return productoRepository.findAll();
+        return IProductoRepository.findAll();
     }
 
     @Override
     public Optional<Producto> findById(Long id) {
-        return productoRepository.findById(id);}
+        return IProductoRepository.findById(id);}
 }
