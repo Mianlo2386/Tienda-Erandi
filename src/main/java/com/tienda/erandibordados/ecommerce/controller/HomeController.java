@@ -156,15 +156,22 @@ public class HomeController {
             dt.setOrden(orden);
             detalleOrdenService.save(dt);
         }
-
         //limpiar
 
         orden = new Orden();
         detalles.clear();
 
         return "redirect:/";
+    }
+    @PostMapping("/search")
+    public String searchProduct(@RequestParam String nombre, Model model){
+        log.info("Nombre del producto: {}", nombre);
+        List<Producto> productos = productoService.findAll().stream()
+                .filter(p -> p.getNombre().toLowerCase().contains(nombre.toLowerCase()))
+                .collect(Collectors.toList());
+        model.addAttribute("productos", productos);
 
-
+        return "usuario/home";
     }
 
 
