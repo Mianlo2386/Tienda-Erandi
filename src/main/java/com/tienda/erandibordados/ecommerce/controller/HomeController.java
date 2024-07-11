@@ -9,9 +9,11 @@ import com.tienda.erandibordados.ecommerce.service.IOrdenService;
 import com.tienda.erandibordados.ecommerce.service.IUsuarioService;
 import com.tienda.erandibordados.ecommerce.service.ProductoService;
 
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +48,14 @@ public class HomeController {
     Orden orden = new Orden();//datos de la orden
 
     @GetMapping("")
-    public String home(Model model){
+    public String home(Model model, HttpSession session){
+        log.info("Sesion del usuario: {}", session.getAttribute("idusuario") );
+
         model.addAttribute("productos", productoService.findAll());
+
+        //session
+        model.addAttribute("session", session.getAttribute("idusuario"));
+
         return "usuario/home";
     }
     @GetMapping("productohome/{id}")
@@ -121,18 +129,20 @@ public class HomeController {
         return "usuario/carrito";
     }
     @GetMapping("/getCart")
-    public String getCart(Model model){
+    public String getCart(Model model, HttpSession session){
 
         model.addAttribute("cart", detalles);
         model.addAttribute("orden", orden);
 
+        //session
+        model.addAttribute("session", session.getAttribute("idusuario"));
         return "usuario/carrito";
     }
 
     @GetMapping("/order")
-    public String order(Model model){
+    public String order(Model model, HttpSession session){
 
-        Usuario usuario = usuarioService.findById(1L).get();
+        Usuario usuario = usuarioService.findById(Long.parseLong(session.getAttribute("idusuario").toString())).get();
 
         model.addAttribute("cart", detalles);
         model.addAttribute("orden", orden);
@@ -141,28 +151,41 @@ public class HomeController {
         return "usuario/resumenorden";
     }
 
-    @GetMapping("/saveOrder") //guarda la orden
-    public String saveOrder(){
-        Date fechaCreacion = new Date();
-        orden.setFechaCreacion(fechaCreacion);
-        orden.setNumero(ordenService.generarNumeroOrden());
+    @GetMapping("/saveOrder")
+    public String saveOrder(HttpSession session) {
+        try {
+            Date fechaCreacion = new Date();
+            orden.setFechaCreacion(fechaCreacion);
+            orden.setNumero(ordenService.generarNumeroOrden());
 
-        //usuario
-        Usuario usuario = usuarioService.findById(1L).get();
-        orden.setUsuario(usuario);
-        ordenService.save(orden);
+            // Obtener usuario desde la sesión
+            Long idUsuario = (Long) session.getAttribute("idusuario");
+            Usuario usuario = usuarioService.findById(idUsuario).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        for (DetalleOrden dt:detalles){ //guardado de detalles
-            dt.setOrden(orden);
-            detalleOrdenService.save(dt);
+            orden.setUsuario(usuario);
+            ordenService.save(orden);
+
+            for (DetalleOrden detalle : detalles) { // Guardar detalles de la orden
+                detalle.setOrden(orden);
+                detalleOrdenService.save(detalle);
+            }
+
+            // Limpiar orden y detalles
+            orden = new Orden();
+            detalles.clear();
+
+            return "redirect:/";
+        } catch (NumberFormatException | IllegalStateException e) {
+            log.error("Error al guardar la orden: {}", e.getMessage());
+            // Manejo de errores: redirigir a una página de error o manejar según corresponda
+            return "redirect:/error";
+        } catch (DataIntegrityViolationException e) {
+            log.error("Error de integridad al guardar la orden: {}", e.getMessage());
+            // Manejo de errores de integridad (puedes mostrar un mensaje de error al usuario)
+            return "redirect:/error";
         }
-        //limpiar
-
-        orden = new Orden();
-        detalles.clear();
-
-        return "redirect:/";
     }
+
     @PostMapping("/search")
     public String searchProduct(@RequestParam String nombre, Model model){
         log.info("Nombre del producto: {}", nombre);

@@ -4,8 +4,11 @@ package com.tienda.erandibordados.ecommerce.controller;
 import com.tienda.erandibordados.ecommerce.model.Producto;
 import com.tienda.erandibordados.ecommerce.model.TipoUsuario;
 import com.tienda.erandibordados.ecommerce.model.Usuario;
+import com.tienda.erandibordados.ecommerce.service.IUsuarioService;
 import com.tienda.erandibordados.ecommerce.service.ProductoService;
 import com.tienda.erandibordados.ecommerce.service.UploadFileService;
+import com.tienda.erandibordados.ecommerce.service.UsuarioServiceImpl;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,8 @@ public class ProductoController {
     @Autowired
     private ProductoService productoService;
     @Autowired
+    private IUsuarioService usuarioService;
+    @Autowired
     private UploadFileService uploadFileService;
 
     @GetMapping("")
@@ -35,21 +40,11 @@ public class ProductoController {
     public String create(){
         return "productos/create";
     }
+
     @PostMapping("/save")
-    public String save(Producto producto,@RequestParam("img") MultipartFile file) throws IOException {
+    public String save(Producto producto, @RequestParam("img") MultipartFile file, HttpSession session) throws IOException {
         LOGGER.info("Este es el objeto producto {}", producto);
-        Usuario usuario  = new Usuario(
-                1L,                           // id
-                "",                 // nombre
-                "Mianlo",                  // username
-                "",      // email
-                null,                         // direccion
-                "",                   // telefono
-                TipoUsuario.ADMINISTRADOR,    // tipo
-                "",             // clave
-                null,                         // productos
-                null                          // ordenes
-                );
+        Usuario usuario  = usuarioService.findById(Long.parseLong(session.getAttribute("idusuario").toString())).get();
         producto.setUsuario(usuario);
         //imagen
         if (producto.getId()==null){ //cuando se crea un producto

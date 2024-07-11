@@ -2,6 +2,7 @@ package com.tienda.erandibordados.ecommerce.model;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -24,7 +25,7 @@ public class Orden {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @OneToOne(mappedBy = "orden", cascade = CascadeType.ALL, orphanRemoval = true)
-    private DetalleOrden detalleOrden;
+    @OneToMany(mappedBy = "orden", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetalleOrden> detalleOrden;
 }
 

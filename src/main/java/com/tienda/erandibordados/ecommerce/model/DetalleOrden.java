@@ -17,7 +17,7 @@ public class DetalleOrden {
     private double precio;
     private double total;
 
-    @OneToOne
+    @ManyToOne//Revisar si no es ManyToOne o OneToOne
     @JoinColumn(name = "orden_id")
     private Orden orden;
 
