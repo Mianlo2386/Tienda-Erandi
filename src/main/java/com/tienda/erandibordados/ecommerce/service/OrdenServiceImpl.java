@@ -1,18 +1,26 @@
 package com.tienda.erandibordados.ecommerce.service;
 
+import com.tienda.erandibordados.ecommerce.model.DetalleOrden;
 import com.tienda.erandibordados.ecommerce.model.Orden;
 import com.tienda.erandibordados.ecommerce.model.Usuario;
+import com.tienda.erandibordados.ecommerce.repository.IDetalleOrdenRepository;
 import com.tienda.erandibordados.ecommerce.repository.IOrdenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class OrdenServiceImpl implements IOrdenService{
+public class OrdenServiceImpl implements IOrdenService {
+
     @Autowired
     private IOrdenRepository ordenRepository;
+
+    @Autowired
+    private IDetalleOrdenRepository detalleOrdenRepository;
 
     @Override
     public List<Orden> findAll() {
@@ -23,6 +31,7 @@ public class OrdenServiceImpl implements IOrdenService{
     public Orden save(Orden orden) {
         return ordenRepository.save(orden);
     }
+
     public String generarNumeroOrden(){
         int numero = 0;
         String numeroConcatenado = "";
@@ -55,4 +64,29 @@ public class OrdenServiceImpl implements IOrdenService{
     public List<Orden> findByUsuario(Usuario usuario) {
         return ordenRepository.findByUsuario(usuario);
     }
+
+    @Override
+    public Optional<Orden> findById(Long id) {
+        return ordenRepository.findById(id);
+    }
+
+    @Transactional
+    public void guardarDetallesOrden(Orden orden, List<DetalleOrden> detalles) {
+        for (DetalleOrden detalle : detalles) {
+            DetalleOrden existente = detalleOrdenRepository.findByOrdenIdAndProductoId(orden.getId(), detalle.getProducto().getId());
+            if (existente == null) {
+                detalle.setOrden(orden);
+                detalleOrdenRepository.save(detalle);
+                // Log para verificar el detalle guardado
+                System.out.println("Detalle guardado correctamente: " + detalle);
+            } else {
+                // Manejar caso de duplicado, por ejemplo, actualizar cantidad
+                existente.setCantidad(existente.getCantidad() + detalle.getCantidad());
+                detalleOrdenRepository.save(existente);
+                // Log para verificar la actualización del detalle
+                System.out.println("Detalle actualizado correctamente: " + existente);
+            }
+        }
+    }
+
 }

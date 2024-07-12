@@ -7,17 +7,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "detalles")
+@Table(name = "detalles", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"orden_id", "producto_id"})
+})
 public class DetalleOrden {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nombre;
     private double cantidad;
     private double precio;
     private double total;
 
-    @ManyToOne//Revisar si no es ManyToOne o OneToOne
+    @ManyToOne
     @JoinColumn(name = "orden_id")
     private Orden orden;
 
@@ -25,4 +28,3 @@ public class DetalleOrden {
     @JoinColumn(name = "producto_id")
     private Producto producto;
 }
-
