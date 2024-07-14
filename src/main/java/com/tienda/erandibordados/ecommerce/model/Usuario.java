@@ -48,4 +48,5 @@ public class Usuario {
                 ", tipo=" + tipo +
                 '}';
     }
+
 }

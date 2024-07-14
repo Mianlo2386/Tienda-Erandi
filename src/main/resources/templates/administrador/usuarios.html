@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Spring eCommerce</title>
+  <title>Erandi Bordados</title>
 
 
   <!-- Bootstrap core CSS -->
@@ -23,7 +23,7 @@
 <body>
 
   <!-- Navigation -->
-  <div th:include="administrador/template_admin.html::header"></div>
+    <div th:insert="~{administrador/template_admin.html::header}"></div>
 
 <!-- Page Content -->
 <div class="container">
@@ -31,7 +31,7 @@
 
   <!-- Page Heading/Breadcrumbs -->
   <h1 class="mt-4 mb-3">
-    Spring eCommerce <small>Usuarios</small>
+    Erandi Bordados <small>Usuarios</small>
   </h1>
 
   <ol class="breadcrumb">
@@ -51,7 +51,8 @@
       <tr th:each="usuario:${usuarios}">
         <td th:text="${usuario.nombre}"></td>
         <td th:text="${usuario.email}"></td>
-        <td th:text="${usuario.direccion}"></td>
+        <td th:text="${usuario.direccion.calle} + ' ' + ${usuario.direccion.numero}"></td>
+
       </tr>       
     </tbody>
   </table>
@@ -60,7 +61,7 @@
 <!-- /.container -->
 
 <!-- Footer -->
-<div th:include="administrador/template_admin.html::footer"></div>
+<div th:insert="~{administrador/template_admin.html::footer}"></div>
 
 	<!-- Bootstrap core JavaScript -->
 	<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
