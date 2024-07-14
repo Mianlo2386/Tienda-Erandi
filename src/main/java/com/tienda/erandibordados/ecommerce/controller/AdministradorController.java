@@ -1,6 +1,7 @@
 package com.tienda.erandibordados.ecommerce.controller;
 
 import com.tienda.erandibordados.ecommerce.model.Producto;
+import com.tienda.erandibordados.ecommerce.service.IOrdenService;
 import com.tienda.erandibordados.ecommerce.service.IUsuarioService;
 import com.tienda.erandibordados.ecommerce.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,13 @@ import java.util.List;
 public class AdministradorController {
     @Autowired
     private ProductoService productoService;
+
     @Autowired
     private IUsuarioService usuarioService;
+
+    @Autowired
+    private IOrdenService ordenService;
+
     @GetMapping("")
     public String home(Model model){
         List<Producto> productos = productoService.findAll();
@@ -28,5 +34,10 @@ public class AdministradorController {
     public String usuarios(Model model){
         model.addAttribute("usuarios", usuarioService.findAll());
         return "administrador/usuarios";
+    }
+    @GetMapping("/ordenes")
+    public String ordenes(Model model){
+        model.addAttribute("ordenes", ordenService.findAll());
+        return "administrador/ordenes";
     }
 }
