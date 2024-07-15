@@ -1,5 +1,6 @@
 package com.tienda.erandibordados.ecommerce.controller;
 
+import com.tienda.erandibordados.ecommerce.model.Orden;
 import com.tienda.erandibordados.ecommerce.model.Producto;
 import com.tienda.erandibordados.ecommerce.service.IOrdenService;
 import com.tienda.erandibordados.ecommerce.service.IUsuarioService;
@@ -47,6 +48,8 @@ public class AdministradorController {
     @GetMapping("/detalle/{id}")
     public String detalle(Model model, @PathVariable Long id){
         logg.info("Id de la orden: {}",id );
+        Orden orden = ordenService.findById(id);//Revisar sino falta get()
+        model.addAttribute("detalles",orden.getDetalleOrden());
         return "administrador/detalleorden";
     }
 }

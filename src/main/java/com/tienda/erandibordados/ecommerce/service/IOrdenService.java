@@ -10,4 +10,6 @@ public interface IOrdenService {
     Orden save(Orden orden);
    String generarNumeroOrden();
    List<Orden> findByUsuario(Usuario usuario);
+
+    Orden findById(Long id);
 }
