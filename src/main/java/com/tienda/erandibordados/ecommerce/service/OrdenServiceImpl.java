@@ -55,4 +55,10 @@ public class OrdenServiceImpl implements IOrdenService{
     public List<Orden> findByUsuario(Usuario usuario) {
         return ordenRepository.findByUsuario(usuario);
     }
+
+    @Override
+    public Orden findById(Long id) {
+        return ordenRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Orden no encontrada con ID: " + id));
+    }
 }
