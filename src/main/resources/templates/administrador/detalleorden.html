@@ -51,11 +51,12 @@
                   <th scope="col">Cantidad</th>
                   <th scope="col">Producto</th>                  
                   <th scope="col">Precio</th>
+                  <th scope="col">Categoría</th>
                   <th scope="col">Total</th>                  
                 </tr>
               </thead>
               <tbody>
-                <tr th:each="detalle:${detalles}">
+              <tr th:each="detalle : ${detalles}">
                   <td th:text="${detalle.cantidad}"></td>
                   <td th:text="${detalle.nombre}"></td>
                   <td th:text="${detalle.precio}"></td>

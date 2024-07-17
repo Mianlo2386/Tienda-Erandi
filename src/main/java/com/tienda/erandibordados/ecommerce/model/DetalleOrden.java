@@ -15,6 +15,8 @@ public class DetalleOrden {
     private String nombre;
     private double cantidad;
     private double precio;
+    @Enumerated(EnumType.STRING)
+    private TipoCategoria tipoCategoria;
     private double total;
 
     @ManyToOne//Revisar si no es ManyToOne o OneToOne

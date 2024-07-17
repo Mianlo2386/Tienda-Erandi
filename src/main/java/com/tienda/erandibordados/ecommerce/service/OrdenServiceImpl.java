@@ -58,7 +58,8 @@ public class OrdenServiceImpl implements IOrdenService{
 
     @Override
     public Orden findById(Long id) {
-        return ordenRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Orden no encontrada con ID: " + id));
+
+        return ordenRepository.findById(id).orElse(null);
+
     }
 }

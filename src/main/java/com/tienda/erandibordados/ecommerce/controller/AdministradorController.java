@@ -48,8 +48,10 @@ public class AdministradorController {
     @GetMapping("/detalle/{id}")
     public String detalle(Model model, @PathVariable Long id){
         logg.info("Id de la orden: {}",id );
+
         Orden orden = ordenService.findById(id);
         model.addAttribute("detalles", orden.getDetalleOrden());
+
         return "administrador/detalleorden";
     }
 
